@@ -148,7 +148,7 @@ public class PInferencer extends jgibblda.Inferencer {
                     // newz_i = newz[docID][i]
                     // Now sample from p(z_i|z_-1,w)
                     int topic = infSampling(row, docID, i); // Similar to PEstimator class. However, newModel is learned with PRIOR from trainModel.
-//                    newModel.z[docID].set(i, topic); // Array and ArrayList: no lock.
+//                    newModel.z[docID].set(n, topic); // Array and ArrayList: no lock.
                     newModel.z[docID][i] = (short) topic; // Array and ArrayList: no lock.
                 }
             }

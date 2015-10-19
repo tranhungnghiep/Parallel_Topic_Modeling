@@ -25,6 +25,9 @@ public class PLDACmdOption extends LDACmdOption {
     @Option(name = "-shuffle", usage = "Number of shuffles. Default = 10.")
     public int shuffleTimes = 10;
 
+    @Option(name = "-shufflets", usage = "Number of shuffles TS. Default = 10.")
+    public int shuffleTimesTS = 10;
+
     @Option(name = "-howtopart", usage = "How to partition: 1: even, 2: gpu. Default = 2.")
     public int howToPartition = 2;
     
@@ -45,4 +48,24 @@ public class PLDACmdOption extends LDACmdOption {
 
     @Option(name = "-datafileformat", usage = "Format of datafile input. Value = {Private, NYT, CORE, ...}. Default = private format.")
     public String datafileFormat = "Private";
+
+    @Option(name = "-gamma", usage = "Specify gamma")
+    public double gamma = -1.0;
+
+    @Option(name = "-tsfile", usage = "Specify timestamp data file")
+    public String tsfile = "";
+
+    /**
+     * Single: e.g., each line is "timestamp"
+     * Array: e.g., each line is "timestamp1 timestamp2"
+     * CitRef: e.g., each line is "timestamp 0 cit_timestamp 0 ref_timestamp"
+     */
+    @Option(name = "-tsfileformat", usage = "Format of tsfile input. Value = {Single, Array, CitRef, ...}. Default = single format.")
+    public String tsfileFormat = "Single";
+
+    @Option(name = "-L", usage = "Length of default timestamp array. Default = 1")
+    public int L = 1;
+    
+    @Option(name = "-permute", usage = "What algorithm to permute and get id list. Value = {A1H1A, A1H1B, A1H1C, A1H1D, A1H2, ..., A2, ...}. Default = empty string")
+    public String permuteAlgorithm = "";
 }
