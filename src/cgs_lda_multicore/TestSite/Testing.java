@@ -27,13 +27,11 @@ public class Testing {
                 "-dfiletest", "",
                 "-alpha", "0.5", "-beta", "0.1", 
                 "-ntopics", "150", 
-                "-niters", "2", "-burnin", "50", "-savestep", "0",
+                "-niters", "1", "-burnin", "50", "-savestep", "0",
                 "-twords", "100", 
                 "-howtogetdist", "1",
                 "-threadpoolsize", "1",
-                "-P", "10", "-shuffle", "100", "-howtopart", "2",
-                "-permute", "A2"
-            };
+                "-P", "1", "-shuffle", "1", "-howtopart", "2"};
             
             PLDA.main(args);
         }

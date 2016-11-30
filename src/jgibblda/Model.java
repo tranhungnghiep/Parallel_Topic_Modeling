@@ -160,7 +160,7 @@ public class Model {
     public short[][] nd;
     /**
      * T: nwsum[j]: total number of words assigned to topic j, size K. 
-     * Not use in PLDA, need to replicate.
+     * Not use directly in PLDA, need to replicate.
      */
     public int[] nwsum;
     /**
@@ -172,7 +172,7 @@ public class Model {
      * Probability of topic when sampling for each word instance.
      * Reused temp variable, to avoid declaring new variable in each word instance sampling.
      * 
-     * Not use in PLDA, need to replicate.
+     * Not use directly in PLDA, need to replicate.
      */
     public double[] p;
 

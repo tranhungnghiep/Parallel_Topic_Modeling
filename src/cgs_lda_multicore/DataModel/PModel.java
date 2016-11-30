@@ -5,7 +5,6 @@
  */
 package cgs_lda_multicore.DataModel;
 
-import cgs_lda_multicore.Utility.GeneralUtility;
 import cgs_lda_multicore.Utility.PLDACmdOption;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,18 +12,12 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicLongArray;
 import jgibblda.Conversion;
 import jgibblda.LDACmdOption;
 import jgibblda.LDADataset;
@@ -134,8 +127,6 @@ public class PModel extends jgibblda.Model {
      */
     public double[][] pList;
     
-    public String permuteAlgorithm;
-    
     public PModel() {
         super();
         // General use.
@@ -176,11 +167,6 @@ public class PModel extends jgibblda.Model {
         getDocIDList();
         getWordIDList();
         
-        // Permute dw matrix and get doc and word id list.
-        if (this.permuteAlgorithm.startsWith("A1") || this.permuteAlgorithm.startsWith("A2")) {
-            dwPermuteParallel();
-        }
-        
         // New list contain same Integer object.
         // However it could add/remove/change order independently, so shuffle is OK.
         List<Integer> docIDListBest = new ArrayList<>(docIDList);
@@ -214,12 +200,8 @@ public class PModel extends jgibblda.Model {
             }
 
             // Shuffle after partitioning, so the first partitioning is based on original order.
-            if (this.permuteAlgorithm.startsWith("A2")) {
-                dwPermuteParallel();
-            } else {
-                Collections.shuffle(docIDList);
-                Collections.shuffle(wordIDList);
-            }
+            Collections.shuffle(docIDList);
+            Collections.shuffle(wordIDList);
 
             long elapse = System.currentTimeMillis() - start;
             System.out.println("Shuffling " + (i + 1) + ". Eta = " + etaArray[i] + ". In: " + (double) elapse / 1000 + " second.");
@@ -883,7 +865,6 @@ public class PModel extends jgibblda.Model {
         this.P = option.P;
         this.shuffleTimes = option.shuffleTimes;
         howToPartition = option.howToPartition;
-        permuteAlgorithm = option.permuteAlgorithm;
 
         return true;
     }
@@ -1011,84 +992,5 @@ public class PModel extends jgibblda.Model {
         }
 
         return true;
-    }
-
-    /**
-     * Algorithm 1 to permute DW matrix.
-     * 
-     * @throws Exception 
-     */
-    private void dwPermuteParallel() throws Exception {
-        // Count into array number of Word Instance in each doc and of each word.
-        final AtomicLong[] docWordInstance = new AtomicLong[M];
-        final AtomicLong[] wordWordInstance = new AtomicLong[V];
-        for (int i = 0; i < M; i++) {
-            docWordInstance[i] = new AtomicLong();
-        }
-        for (int i = 0; i < V; i++) {
-            wordWordInstance[i] = new AtomicLong();
-        }
-        // Set up thread pool.
-        ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
-        for (int m = 0; m < M; m++) {
-            final int docID = m;
-            executor.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // Counting.
-                        docWordInstance[docID].set(data.docs[docID].length);
-                        for (Integer wordID : data.docs[docID].words) {
-                            wordWordInstance[wordID].incrementAndGet();
-                        }
-                    } catch (Exception ex) {
-                        System.err.println(ex.toString());
-                        ex.printStackTrace();
-                    }
-                }
-            });
-        }
-        // Shutdown thread pool, wait until shutdown finished.
-        executor.shutdown();
-        while (!executor.isTerminated()) {}
-        
-        // Convert array to hashmap to keep id information before sorting.
-        LinkedHashMap<Integer, Long> docWordInstanceHM = GeneralUtility.arrayToLinkedHashMap(docWordInstance);
-        LinkedHashMap<Integer, Long> wordWordInstanceHM = GeneralUtility.arrayToLinkedHashMap(wordWordInstance);
-        
-        // Sort hashmap.
-        docWordInstanceHM = GeneralUtility.getSortedMapDescending(docWordInstanceHM);
-        wordWordInstanceHM = GeneralUtility.getSortedMapDescending(wordWordInstanceHM);
-        
-        // Get sorted id list
-        docIDList = new ArrayList(docWordInstanceHM.keySet());
-        wordIDList = new ArrayList(wordWordInstanceHM.keySet());
-        
-        // Run copy permuted id list (interpose most-least).
-        if (this.permuteAlgorithm.startsWith("A1H1")) {
-            docIDList = GeneralUtility.interposeList(docIDList);
-            wordIDList = GeneralUtility.interposeList(wordIDList);
-        } else if (this.permuteAlgorithm.startsWith("A1H2")) {
-            docIDList = GeneralUtility.interposeSymmetryList(docIDList);
-            wordIDList = GeneralUtility.interposeSymmetryList(wordIDList);
-        } else if (this.permuteAlgorithm.startsWith("A2")) {
-            docIDList = GeneralUtility.rangerList(docIDList, P);
-            wordIDList = GeneralUtility.rangerList(wordIDList, P);
-        }
-        
-        // Run symmetric transformation (swap).
-        if (this.permuteAlgorithm.endsWith("A")) {
-            // Keep current order.
-        } else if (this.permuteAlgorithm.endsWith("B")) {
-            // Swap vertically: swap word.
-            GeneralUtility.swapList(wordIDList);
-        } else if (this.permuteAlgorithm.endsWith("C")) {
-            // Swap vertically: swap both doc and word.
-            GeneralUtility.swapList(docIDList);
-            GeneralUtility.swapList(wordIDList);
-        } else if (this.permuteAlgorithm.endsWith("D")) {
-            // Swap vertically: swap doc.
-            GeneralUtility.swapList(docIDList);
-        }
     }
 }
