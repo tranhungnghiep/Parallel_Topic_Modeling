@@ -6,20 +6,24 @@ We also built a dataset that contains timestamped documents for time-aware topic
 
 #### Data format:
 _Document file:_
-</br>`Line 1: number of documents.`
-</br>`Line 2: word list of document 1, each word separated by space.`
-</br>`Line 3: word list of document 2, each word separated by space.`
-</br>`...`
+```
+Line 1: number of documents.
+Line 2: word list of document 1, each word separated by space.
+Line 3: word list of document 2, each word separated by space.
+...
+```
 
 _Timestamp file:_
-</br>`Line 1: number of distinct timestamps`
-</br>`Line 2: earliest timestamp`
-</br>`Line 3: latest timestamp`
-</br>`Line 4: timestamp of document 1`
-</br>`Line 5: timestamp of document 2`
-</br>`...`
+```
+Line 1: number of distinct timestamps
+Line 2: earliest timestamp
+Line 3: latest timestamp
+Line 4: timestamp of document 1
+Line 5: timestamp of document 2
+...
+```
 
-The source code also support NYTimes dataset format.
+The source code also supports NIPS and NYTimes dataset format.
 
 ### How to use
 Parallel_Topic_Modeling can either be used in command line or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data, etc.
