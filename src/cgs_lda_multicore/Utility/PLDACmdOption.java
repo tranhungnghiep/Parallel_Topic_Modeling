@@ -13,8 +13,8 @@ import org.kohsuke.args4j.Option;
  * @author THNghiep
  */
 public class PLDACmdOption extends LDACmdOption {
-    @Option(name = "-burnin", usage = "Burn in period: number of samples (iterations) to discard at the beginning of MC. Default = 200")
-    public int burnIn = 200;
+    @Option(name = "-burnin", usage = "Burn in period: number of samples (iterations) to discard at the beginning of MC. Default = 100")
+    public int burnIn = 100;
 
     @Option(name = "-P", usage = "Number of partitions. Default = num of cores - 1.")
     public int P = GeneralUtility.getNumOfCore() - 1;
