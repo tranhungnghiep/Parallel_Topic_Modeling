@@ -1,4 +1,4 @@
-## Parallel_Topic_Modeling: An Efficient Topic Modeling Parallelization
+## Parallel_Topic_Modeling: An Efficient Time-aware Topic Modeling Parallelization
 ### Introduction
 Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling based on a novel <a href="https://arxiv.org/pdf/1510.04317.pdf">data partitioning algorithm</a>. The source code currently supports learning <a href="http://www.jmlr.org/papers/v3/blei03a.html">LDA</a> and <a href="http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51">Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient parallelization speedup on multi-core CPU. Our source code is based on <a href="http://jgibblda.sourceforge.net/">JGibbLDA</a>, a non-parallel LDA implementation.
 
