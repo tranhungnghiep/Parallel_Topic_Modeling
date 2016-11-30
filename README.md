@@ -5,12 +5,12 @@ Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gi
 We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
 
 #### Data format:
-- Document file: 
+<b>Document file</b>: 
 </br>Line 1: number of documents.
 </br>Line 2: word list of document 1, each word separated by space.
 </br>Line 3: word list of document 2, each word separated by space.
 </br>...
-- Timestamp file:
+<b>Timestamp file:</b>
 </br>Line 1: number of distinct timestamps
 </br>Line 2: earliest timestamp
 </br>Line 3: latest timestamp
@@ -19,16 +19,19 @@ We also built a dataset that contains timestamped documents for time-aware topic
 </br>...
 
 ### How to use
-Parallel_Topic_Modeling can be used to estimate the topic distribution of a corpus by LDA or BoT model.
+Parallel_Topic_Modeling can be used to estimate the topic distribution of a corpus by LDA or BoT model. You can specify the number of parallel threads and how to partition data. The source code also support NYTimes dataset format.
 
-#### Sample
-For commandline use:
+#### For commandline use:
 This command estimate the topic distribution of MAS corpus using BoT model, parallel in 10 threads...
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 256 -L 16 -niters 200 -burnin 50 -savestep 0 -twords 10 -howtogetdist 1 -threadpoolsize 31 -P 10 -shuffle 10 -shufflets 200 -howtopart 2`
-</br>where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file.
-Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/Utility/PLDACmdOption.java` for explanation.
 
-For using in your code as a library, please see sample files `/src/cgs_lda_multicore/TestSite/Testing.java`	for LDA and `/src/cgs_lda_multicore/TestSite/Testing_BoT.java` for BoT.
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 1 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 10 -howtopart 2`
+</br>where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file.
+</br>The command can be shortened using default value as:
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1`
+Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/Utility/PLDACmdOption.java` for explanation of commandline options.
+
+#### For using in your code as a library:
+Please see sample files `/src/cgs_lda_multicore/TestSite/Testing.java`	for LDA and `/src/cgs_lda_multicore/TestSite/Testing_BoT.java` for BoT.
 
 ### License
 Parallel_Topic_Modeling is a free software under the terms of <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
