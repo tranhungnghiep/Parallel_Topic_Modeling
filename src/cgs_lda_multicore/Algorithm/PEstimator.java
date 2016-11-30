@@ -106,7 +106,6 @@ public class PEstimator extends Estimator {
         int lastIter = trnModel.liter;
         
         System.out.println("Start iteration " + (trnModel.liter + 1) + " ...");
-        long startAll = System.currentTimeMillis();
         for (trnModel.liter = lastIter + 1; trnModel.liter <= lastIter + trnModel.niters; trnModel.liter++) {
             long start = System.currentTimeMillis();
             for (int col = 0; col < P; col++) {
@@ -133,6 +132,29 @@ public class PEstimator extends Estimator {
                     });
                 }
                 // Sync step.
+                // Note: Load balancing problem is not only because of sync step, 
+                // but also because of non-overlapped partitions on 1 diagonal line.
+                // Options for syncing and alternatives:
+                // 1. copy T for every partition in diagonal, and sync T after every diagonal. (current)
+                // --> requires load balancing after each diagonal.
+                // 2. copy T for every partition in the whole DW, and sync T after whole iteration. 
+                // (sync less but may converge slower than option 1)
+                // --> still requires load balacing after each diagonal 
+                // (if re-scheduling partition, it may not require load balancing.)
+                // 3. do not copy T, read only T from 1 source, recalculate T after whole iteration.
+                // --> condition is similar to option 2, but may converge even slower.
+                // 4. do not copy T, no-lock access T directly in every word instance sampling.
+                // --> still requires load balacing after each diagonal 
+                // (if re-scheduling partition, it may not require load balancing.)
+                // --> because parallel t--, need to check to avoid t < 0, java 8 allows this.
+                // 5. copy and async T after each process finished each partition.
+                // --> still requires load balacing after each diagonal 
+                // (if re-scheduling partition, it may not require load balancing.)
+                // --> also face t < 0 problem, solution is similar to option 4.
+                // --> async update algorithm is simple: sync changes compared to the original T.
+                
+                // These options can also be used together with partition/load balancing algorithm.
+                
                 // Wait until all thread finished.
                 // When all thread is finished, all local cached data are flushed, so no Visibility problem with multithreading.
                 while (countThreadFinish.get() != P) {}
@@ -160,10 +182,6 @@ public class PEstimator extends Estimator {
         executor.shutdown();
         while (!executor.isTerminated()) {}
         
-        // Time all iterations.
-        long elapseAll = System.currentTimeMillis() - startAll;
-        System.out.println("Finish " + trnModel.niters + " iterations in " + (double) elapseAll / 1000 + " seconds. (P = " + trnModel.P + ", threadPoolSize = " + trnModel.threadPoolSize + ")");
-
         System.out.println("Gibbs sampling completed.");
         System.out.println("Saving the final model.");
         trnModel.computeTheta();
