@@ -1,18 +1,35 @@
 ## Parallel_Topic_Modeling: Efficient CPU Topic Modeling Parallelization
 ### Introduction
-Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient speedup on multi-core CPU.
+Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient speedup on multi-core CPU. The source code is based on the non-parallel LDA implementation <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a>.
 
-We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from http://academic.research.microsoft.com. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
+We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
 
-The source code is based on the non-parallel LDA implementation <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a> by Xuan-Hieu Phan and Cam-Tu Nguyen.
+Data format:
+- Document file: 
+Line 1: number of documents.
+Line 2: word list of document 1, each word separated by space.
+Line 3: word list of document 2, each word separated by space.
+...
+- Timestamp file:
+Line 1: number of distinct timestamps
+Line 2: earliest timestamp
+Line 3: latest timestamp
+Line 4: timestamp of document 1
+Line 5: timestamp of document 2
+...
 
 ### How to use
-You can use commandline or call the class from your code.
+Parallel_Topic_Modeling can either be used by commandline or from your code.
 
-java -Xmx64g -cp ./Code/PLDA/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 256 -L 16 -niters 200 -burnin 50 -savestep 0 -twords 10 -howtogetdist 1 -threadpoolsize 31 -P 10 -shuffle 10 -shufflets 200 -howtopart 2
+For commandline sample:
+`java -Xmx64g -cp ./Code/PLDA/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 256 -L 16 -niters 200 -burnin 50 -savestep 0 -twords 10 -howtogetdist 1 -threadpoolsize 31 -P 10 -shuffle 10 -shufflets 200 -howtopart 2`
+
+For sample programming in code, see file Testing.java	and Testing_BoT.java.
+
+
 
 ### License
-Parallel_Topic_Modeling is a free software under the terms of the <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
+Parallel_Topic_Modeling is a free software under the terms of <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
 
 The dataset is provided under the <a href=http://opendatacommons.org/licenses/by/summary/>Open Data Commons Attribution License</a>. You can freely use, redistribute, and modify it as long as you acknowledge us.
 
