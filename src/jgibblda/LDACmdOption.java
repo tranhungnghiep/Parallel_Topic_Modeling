@@ -38,7 +38,7 @@ public class LDACmdOption {
     public int savestep = 100;
 
     @Option(name = "-twords", usage = "Specify the number of most likely words to be printed for each topic")
-    public int twords = 10;
+    public int twords = 100;
 
     @Option(name = "-withrawdata", usage = "Specify whether we include raw data in the input")
     public boolean withrawdata = false;

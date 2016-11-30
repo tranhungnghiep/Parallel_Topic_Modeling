@@ -6,6 +6,7 @@
 package cgs_lda_multicore.Algorithm;
 
 import cgs_lda_multicore.DataModel.PModel;
+import cgs_lda_multicore.DataModel.PModel_BoT;
 import cgs_lda_multicore.Utility.PLDACmdOption;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -43,17 +44,11 @@ import jgibblda.Estimator;
  * 
  * @author THNghiep
  */
-public class PEstimator extends Estimator {
-    static AtomicInteger countThreadFinish = new AtomicInteger();
-    
+public class PEstimator_BoT extends PEstimator {
     /**
      * Train model using PModel
      */
-    public PModel trnModel;
-    /**
-     * POption.
-     */
-    PLDACmdOption option;
+    public PModel_BoT trnModel;
 
     /**
      * Init using POption.
@@ -62,27 +57,24 @@ public class PEstimator extends Estimator {
      * @return
      * @throws Exception 
      */
+    @Override
     public boolean init(PLDACmdOption option) throws Exception {
         this.option = option;
-        trnModel = new PModel();
+        this.trnModel = new PModel_BoT();
+        super.trnModel = this.trnModel;
         
         if (option.est) {
             // Estimate from scratch.
             // Note for Java polymorphism:
             // - Subclass param is auto converted to super class.
             // - When there are 2 suitable method in subclass and super class, priority go for current class instance.
-            // That is PModel.initNewModel(PLDACmdOption).
-            if (!trnModel.initNewModel(option)) {
+            // That is PModel_BoT.initNewModel(PLDACmdOption).
+            if (!trnModel.initNewModelBoT(option)) {
                 // Only this method has implemented test set.
                 return false;
             }
             trnModel.partitionData(this.option.howToPartition);
-        } else if (option.estc) {
-            // Continue estimatePartition.
-            if (!trnModel.initEstimatedModel(option)) {
-                return false;
-            }
-            trnModel.partitionData(this.option.howToPartition);
+            trnModel.partitionTS(this.option.howToPartition);
         }
 
         return true;
@@ -93,9 +85,10 @@ public class PEstimator extends Estimator {
      * 
      * @throws Exception 
      */
-    public void estimateParallelGPUAlgorithm() throws Exception {
+    public void estimateParallelGPUAlgorithm_BoTA1() throws Exception {
         System.out.println("Sampling " + trnModel.niters + " iteration more.");
         System.out.println("Parallel on " + trnModel.P + " partitions. Thread pool size: " + trnModel.threadPoolSize);
+        System.out.println("Total " + trnModel.O + " timestamps. Timestamp array size: " + trnModel.L);
         int P = trnModel.P;
         int threadPoolSize = trnModel.threadPoolSize;
         
@@ -111,6 +104,12 @@ public class PEstimator extends Estimator {
             long start = System.currentTimeMillis();
             for (int col = 0; col < P; col++) {
                 // Sampling step.
+                // Note that: 
+                // - Sampling word would be based on DT, TW, and TW sum.
+                // - Sampling ts would be based on DT, TTS, and TTS sum.
+                // => so do not need to syncTWSum T between sampling word and ts, but need to finish on DT.
+                
+                // First turn: sampling word.
                 // Reset counting finished thread.
                 countThreadFinish.set(0);
                 for (int row = 0; row < P; row++) {
@@ -132,11 +131,36 @@ public class PEstimator extends Estimator {
                         }
                     });
                 }
-                // Sync step.
                 // Wait until all thread finished.
                 // When all thread is finished, all local cached data are flushed, so no Visibility problem with multithreading.
                 while (countThreadFinish.get() != P) {}
                 trnModel.syncTWSum();
+                
+                // Second turn: After finised sampling word on DT, Sampling timestamp.
+                countThreadFinish.set(0);
+                for (int row = 0; row < P; row++) {
+                    // All row in parallel, so row is also partitionID.
+                    final int realRow = row;
+                    final int realCol = (row + col) % P;
+                    executor.submit(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                // Call for each thread.
+                                estimatePartitionTS(realRow, realCol);
+                                int threadNum = countThreadFinish.incrementAndGet();
+                                //System.out.println("Finished thread " + threadNum);
+                            } catch (Exception ex) {
+                                System.err.println(ex.toString());
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                // Wait until all thread finished.
+                // When all thread is finished, all local cached data are flushed, so no Visibility problem with multithreading.
+                while (countThreadFinish.get() != P) {}
+                trnModel.syncTTSSum();
             }
             // Time each iteration.
             long elapse = System.currentTimeMillis() - start;
@@ -147,9 +171,11 @@ public class PEstimator extends Estimator {
                     System.out.println("Saving the model at iteration " + trnModel.liter + " ...");
                     trnModel.computeTheta();
                     trnModel.computePhi();
+                    trnModel.computePi();
                     if (option.howToGetDistribution == 2) {
                         trnModel.computeCumulativeTheta();
                         trnModel.computeCumulativePhi();
+                        trnModel.computeCumulativePi();
                         trnModel.numCumulativeSample++;
                     }
                     trnModel.saveModel("model-" + Conversion.ZeroPad(trnModel.liter, 5));
@@ -168,39 +194,40 @@ public class PEstimator extends Estimator {
         System.out.println("Saving the final model.");
         trnModel.computeTheta();
         trnModel.computePhi();
+        trnModel.computePi();
         if (option.howToGetDistribution == 2) {
             trnModel.computeStationaryTheta();
             trnModel.computeStationaryPhi();
+            trnModel.computeStationaryPi();
         }
         trnModel.liter--;
         trnModel.saveModel("model-final");
     }
     
     /**
-     * Estimate for 1 partition.
+     * Estimate TS for 1 partition.
      * 
      * @param row
      * @param col
      */
-    public void estimatePartition(int row, int col) throws Exception {
-//        System.out.println("Start: Partition row: " + row + ", col: " + col + ".");
+    public void estimatePartitionTS(int row, int col) throws Exception {
+//        System.out.println("Start Sampling TS: Partition row: " + row + ", col: " + col + ".");
         
-        // loop over every word instance assignment z_i.
-        // z is a type of var: the topic assignment. There are many z var: each assignment.
-        for (int docID : trnModel.partitionToDoc.get(row)) {
-            for (int i = 0; i < trnModel.data.docs[docID].length; i++) {
-                int wordID = trnModel.data.docs[docID].words[i];
-                if (trnModel.partitionToWord.get(col).contains(wordID)) {
-                    // z_i = z[docID][i]
-                    // Now sample z_i from p(z_i|z_-i, w)
-                    int topic = sampling(row, docID, i);
-//                    trnModel.z[docID].set(i, topic); // Array and ArrayList: no lock.
-                    trnModel.z[docID][i] = (short) topic;
+        // loop over every ts instance assignment z_i.
+        // y is a type of var: the topic assignment. There are many y var: each assignment.
+        for (int docID : trnModel.partitionToDocBoTA1.get(row)) {
+            for (int i = 0; i < trnModel.data.docs[docID].L; i++) {
+                int tsID = trnModel.data.docs[docID].tss[i];
+                if (trnModel.partitionToTSBoTA1.get(col).contains(tsID)) {
+                    // y_i = y[docID][i]
+                    // Now sample y_i from p(y_i|y_-i, ts)
+                    int topic = samplingTS(row, docID, i);
+                    trnModel.y[docID][i] = (short) topic;
                 }
             }// end for each word
         }// end for each document
 
-//        System.out.println("Finish: Partition row: " + row + ", col: " + col + ".");
+//        System.out.println("Finish Sampling TS: Partition row: " + row + ", col: " + col + ".");
     }
 
     /**
@@ -214,28 +241,26 @@ public class PEstimator extends Estimator {
      * @param i
      * @return topic assignment.
      */
-    public int sampling(int partID, int docID, int i) throws Exception {
-        // remove z_i from the count variable
-//        int topic = trnModel.z[docID].get(i);
-        int topic = trnModel.z[docID][i];
-        int wordID = trnModel.data.docs[docID].words[i];
+    public int samplingTS(int partID, int docID, int i) throws Exception {
+        // remove y_i from the count variable
+        int topic = trnModel.y[docID][i];
+        int tsID = trnModel.data.docs[docID].tss[i];
 
         // Parallel access to these arrays, no conflict -> no race condition or visibility problem, no lock.
-        trnModel.nw[wordID][topic] -= 1; // WT
+        trnModel.nts[tsID][topic] -= 1; // WT
         trnModel.nd[docID][topic] -= 1; // DT
-//        trnModel.nwsumList.get(partID)[topic] -= 1; // T
-        trnModel.nwsumList[partID][topic] -= 1; // T
+        trnModel.ntssumList[partID][topic] -= 1; // TTS
         trnModel.ndsum[docID] -= 1; // doc length
 
-        double Vbeta = trnModel.V * trnModel.beta;
+        double Ogamma = trnModel.O * trnModel.gamma;
         double Kalpha = trnModel.K * trnModel.alpha;
 
         // Do multinominal sampling via cumulative method.
         // Also divide by doc length because not normalize later.
+        // Meaning: P(ts_assignment=topic) = P(ts|topic) * P(topic|doc)
         for (int k = 0; k < trnModel.K; k++) {
             trnModel.pList[partID][k] = 
-//                    (trnModel.nw[wordID][k] + trnModel.beta) / (trnModel.nwsumList.get(partID)[k] + Vbeta) 
-                    (trnModel.nw[wordID][k] + trnModel.beta) / (trnModel.nwsumList[partID][k] + Vbeta) 
+                    (trnModel.nts[tsID][k] + trnModel.gamma) / (trnModel.ntssumList[partID][k] + Ogamma) 
                     * (trnModel.nd[docID][k] + trnModel.alpha) / (trnModel.ndsum[docID] + Kalpha);
         }
 
@@ -254,24 +279,10 @@ public class PEstimator extends Estimator {
             }
         }
 
-        /*// debug: bug T < 0.
-        if (topic >= trnModel.K) {
-            System.err.println("Topic: " + topic);
-            System.err.println("Doc: " + docID);
-            System.err.println("Word: " + wordID);
-            System.err.println("Random num: " + u);
-            System.err.println("Topic distribution: ");
-//            for (double d : trnModel.pList.get(partID)) {
-            for (double d : trnModel.pList[partID]) {
-                System.err.print(d + "\t");
-            }
-        }*/
-        
         // add newly estimated z_i to count variables
-        trnModel.nw[wordID][topic] += 1;
+        trnModel.nts[tsID][topic] += 1;
         trnModel.nd[docID][topic] += 1;
-//        trnModel.nwsumList.get(partID)[topic] += 1;
-        trnModel.nwsumList[partID][topic] += 1;
+        trnModel.ntssumList[partID][topic] += 1;
         trnModel.ndsum[docID] += 1;
 
         return topic;
