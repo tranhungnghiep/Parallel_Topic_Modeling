@@ -1,8 +1,8 @@
 ## Parallel_Topic_Modeling: An Efficient Topic Modeling Parallelization
 ### Introduction
-Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling based on a novel <a href=http://ieeexplore.ieee.org/document/7334854/>data partitioning algorithm</a>. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient parallelization speedup on multi-core CPU. Our source code is based on <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a>, a non-parallel LDA implementation.
+Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling based on a novel <a href="https://arxiv.org/pdf/1510.04317.pdf">data partitioning algorithm</a>. The source code currently supports learning <a href="http://www.jmlr.org/papers/v3/blei03a.html">LDA</a> and <a href="http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51">Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient parallelization speedup on multi-core CPU. Our source code is based on <a href="http://jgibblda.sourceforge.net/">JGibbLDA</a>, a non-parallel LDA implementation.
 
-We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific papers in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB).
+We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific papers in the computer science domain from 1951 to 2010, crawled from <a href="http://academic.research.microsoft.com">Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB).
 
 #### Data format:
 _Document file:_
@@ -40,11 +40,11 @@ Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/U
 For using in your code as a library, please see sample files `/src/cgs_lda_multicore/TestSite/Testing.java`	for LDA and `/src/cgs_lda_multicore/TestSite/Testing_BoT.java` for BoT.
 
 ### License
-Parallel_Topic_Modeling is a free software under the terms of <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
+Parallel_Topic_Modeling is a free software under the terms of <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
 
-The dataset is provided under the <a href=http://opendatacommons.org/licenses/by/summary/>Open Data Commons Attribution License</a> 1.0. You can freely use, redistribute, and modify it as long as you acknowledge us.
+The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">Open Data Commons Attribution License</a> 1.0. You can freely use, redistribute, and modify it as long as you acknowledge us.
 
 If you find the source code or the dataset useful, please acknowledge us by kindly citing the following paper: 
-<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&citation_for_view=fYPeEWkAAAAJ:QIV2ME_5wuYC" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.
+<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.
 
 For more information, please visit the website: https://sites.google.com/site/tranhungnghiep
