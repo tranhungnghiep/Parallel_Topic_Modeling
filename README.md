@@ -1,36 +1,35 @@
 ## Parallel_Topic_Modeling: An Efficient Topic Modeling Parallelization
 ### Introduction
-Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient speedup on multi-core CPU. The source code is based on the non-parallel LDA implementation <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a>.
+Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient parallelization speedup on multi-core CPU. The source code is based on the non-parallel LDA implementation <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a>.
 
-We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
+We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific papers in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
 
 #### Data format:
-<b>Document file</b>: 
-</br>Line 1: number of documents.
-</br>Line 2: word list of document 1, each word separated by space.
-</br>Line 3: word list of document 2, each word separated by space.
-</br>...
+**Document file:**
+</br>`Line 1: number of documents.`
+</br>`Line 2: word list of document 1, each word separated by space.`
+</br>`Line 3: word list of document 2, each word separated by space.`
+</br>`...`
 
-<b>Timestamp file:</b>
-</br>Line 1: number of distinct timestamps
-</br>Line 2: earliest timestamp
-</br>Line 3: latest timestamp
-</br>Line 4: timestamp of document 1
-</br>Line 5: timestamp of document 2
-</br>...
+**Timestamp file:**
+</br>`Line 1: number of distinct timestamps`
+</br>`Line 2: earliest timestamp`
+</br>`Line 3: latest timestamp`
+</br>`Line 4: timestamp of document 1`
+</br>`Line 5: timestamp of document 2`
+</br>`...`
 
 The source code also support NYTimes dataset format.
 
 ### How to use
-Parallel_Topic_Modeling can either be used in commandline or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data etc.
+Parallel_Topic_Modeling can either be used in command line or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data, etc.
 
 #### Sample:
-The following command estimates the topic distribution of MAS corpus (the dataset above) using BoT model, parallel in 10 threads.
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 1 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 10 -howtopart 2`
-</br>where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file.
+The following command estimates the topic distribution of MAS corpus (the above dataset) using BoT model, parallelized in 10 threads, where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file.
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 1 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 10 -howtopart 2`.
 
-The command can be shortened using default value as:
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1 threadpoolsize 0 -P 10`
+It can be shortened using default value as:
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1 threadpoolsize 0 -P 10`.
 
 Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/Utility/PLDACmdOption.java` for explanation of commandline options.
 
