@@ -5,13 +5,13 @@ Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gi
 We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific papers in the computer science domain from 1951 to 2010, crawled from <a href=http://academic.research.microsoft.com>Microsoft Research</a>. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
 
 #### Data format:
-**Document file:**
+_Document file:_
 </br>`Line 1: number of documents.`
 </br>`Line 2: word list of document 1, each word separated by space.`
 </br>`Line 3: word list of document 2, each word separated by space.`
 </br>`...`
 
-**Timestamp file:**
+_Timestamp file:_
 </br>`Line 1: number of distinct timestamps`
 </br>`Line 2: earliest timestamp`
 </br>`Line 3: latest timestamp`
@@ -38,7 +38,7 @@ For using in your code as a library, please see sample files `/src/cgs_lda_multi
 ### License
 Parallel_Topic_Modeling is a free software under the terms of <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
 
-The dataset is provided under the <a href=http://opendatacommons.org/licenses/by/summary/>Open Data Commons Attribution License</a>. You can freely use, redistribute, and modify it as long as you acknowledge us.
+The dataset is provided under the <a href=http://opendatacommons.org/licenses/by/summary/>Open Data Commons Attribution License</a> 1.0. You can freely use, redistribute, and modify it as long as you acknowledge us.
 
 If you find the source code or the dataset useful, please acknowledge us by kindly citing the following paper: 
 <br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&citation_for_view=fYPeEWkAAAAJ:QIV2ME_5wuYC" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.
