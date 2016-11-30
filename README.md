@@ -1,10 +1,22 @@
-# CGS LDA Multicore Parallelization
-This is a framework for experiments with multicore parallelization of collapsed Gibbs sampling algorithm on topic models such as LDA and Bag of Timestamps models.
+## Parallel_Topic_Modeling: Efficient CPU Topic Modeling Parallelization
+### Introduction
+Parallel_Topic_Modeling is a Java parallelization implementation of collapsed Gibbs sampling for topic modeling. The source code currently supports learning <a href=http://www.jmlr.org/papers/v3/blei03a.html>LDA</a> and <a href=http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51>Bag-of-Timestamps</a> (a simple time-aware topic model) with efficient speedup on multi-core CPU.
 
-Together with this framework, we have built a dataset for experiments of time-aware topic modeling, especially Bag of Timestamps model (at branch CGS_LDA_Multicore_BoT). The dataset contains over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from http://academic.research.microsoft.com. The dataset is ready to be used with this framework. 
-<br/>The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
+We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains abstract of over 1,000,000 scientific publications in the computer science domain from 1951 to 2010, crawled from http://academic.research.microsoft.com. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB)
 
-If you find the source code or the dataset useful, please kindly cite the following paper: 
-<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="https://scholar.google.com.vn/citations?view_op=view_citation&hl=en&citation_for_view=fYPeEWkAAAAJ:QIV2ME_5wuYC" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.
+The source code is based on the non-parallel LDA implementation <a href=http://jgibblda.sourceforge.net/>JGibbLDA</a> by Xuan-Hieu Phan and Cam-Tu Nguyen.
+
+### How to use
+You can use commandline or call the class from your code.
+
+java -Xmx64g -cp ./Code/PLDA/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS_BoT -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 256 -L 16 -niters 200 -burnin 50 -savestep 0 -twords 10 -howtogetdist 1 -threadpoolsize 31 -P 10 -shuffle 10 -shufflets 200 -howtopart 2
+
+### License
+Parallel_Topic_Modeling is a free software under the terms of the <a href=http://www.gnu.org/licenses/gpl.html>GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
+
+The dataset is provided under the <a href=http://opendatacommons.org/licenses/by/summary/>Open Data Commons Attribution License</a>. You can freely use, redistribute, and modify it as long as you acknowledge us.
+
+If you find the source code or the dataset useful, please acknowledge us by kindly citing the following paper: 
+<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&citation_for_view=fYPeEWkAAAAJ:QIV2ME_5wuYC" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.
 
 For more information, please visit the website: https://sites.google.com/site/tranhungnghiep
