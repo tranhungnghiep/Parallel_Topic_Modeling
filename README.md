@@ -26,26 +26,28 @@ Line 5: timestamp of document 2
 The source code also supports NIPS and NYTimes dataset format.
 
 ### How to use
-Parallel_Topic_Modeling can either be used in command line or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data, etc.
-
-The source code was written in Java using Ant-based NetBeans project format, which can be opened in <a href="https://netbeans.org/">NetBeans IDE</a>. For other IDEs, please see the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/tree/Parallel_Topic_Modeling_Maven">Maven port</a>. You can also use the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/releases">pre-built jar file</a> directly.
+Parallel_Topic_Modeling can either be used in command line or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data, etc. You can use the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/releases">pre-built jar file</a> directly.
 
 #### Sample:
-_LDA Model_
+_LDA Model:_
 </br>The following command estimates the topic distribution of MAS corpus (the above dataset) using LDA model, parallelized in 10 threads, where MAS_doc_removedSW.txt is document file.
 </br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -testsetprop 0.1 -datafileformat Private -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -ntopics 150 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -howtopart 2`.
-</br>It can be shortened using default value as:
+
+It can be shortened using default value as:
 </br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -alpha 0.5 -beta 0.1 threadpoolsize 0 -P 10`.
 
-_BoT Model_
+_BoT Model:_
 </br>The following command estimates the topic distribution of MAS corpus (the above dataset) using BoT model, parallelized in 10 threads, where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file. Note that for BoT model, we change the class to cgs_lda_multicore.UI.PLDA_BoT. We also specify some new options such as timestamp file, timestamp file format, time prior gamma, time array length L, how to shuffle timestamps.
 </br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 8 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 100 -howtopart 2`.
-</br>It can be shortened using default value as:
+
+It can be shortened using default value as:
 </br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1 threadpoolsize 0 -P 10`.
 
 Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/Utility/PLDACmdOption.java` for explanation of commandline options.
 
 For using in your code as a library, please see sample files `/src/cgs_lda_multicore/TestSite/Testing.java`	for LDA and `/src/cgs_lda_multicore/TestSite/Testing_BoT.java` for BoT.
+
+The source code was written in Java using Ant-based NetBeans project format, which can be opened in <a href="https://netbeans.org/">NetBeans IDE</a>. For other IDEs, please see the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/tree/Parallel_Topic_Modeling_Maven">Maven port</a>. 
 
 ### License
 Parallel_Topic_Modeling is a free software under the terms of <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
