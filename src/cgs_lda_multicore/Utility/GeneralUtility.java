@@ -81,6 +81,7 @@ public class GeneralUtility {
 
     /**
      * Copy from 1 list to another list, interposing head/tail.
+     * A1H1 (Algorithm 1 in the paper.)
      * 
      * @param list
      * @return
@@ -101,6 +102,13 @@ public class GeneralUtility {
         return newList;
     }
 
+    /**
+     * A1H2 (Algorithm 2 in the paper.)
+     * 
+     * @param list
+     * @return
+     * @throws Exception 
+     */
     public static List interposeSymmetryList(List list) throws Exception {
         int length = list.size();
 
@@ -119,6 +127,7 @@ public class GeneralUtility {
      * Given a sorted descending list, cut to P part, each part contains sample from all range of list.
      * These samples are randomly got from each range.
      * Finally randomly shuffle each part.
+     * A2 (Algorithm 3 in the paper.)
      * 
      * @param list
      * @param P

@@ -66,6 +66,6 @@ public class PLDACmdOption extends LDACmdOption {
     @Option(name = "-L", usage = "Length of default timestamp array. Default = 8")
     public int L = 8;
     
-    @Option(name = "-permute", usage = "What algorithm to permute and get id list. Value = {A1H1A, A1H1B, A1H1C, A1H1D, A1H2, ..., A2, ...}. Default = empty string")
+    @Option(name = "-permute", usage = "What algorithm to permute and get id list. Value = {A1H1, A1H2, A2}. A1 is non-random (Algorithm 1 and 2 in the paper), A2 is random with prior (Algorithm 3 in the paper). H1 and H2 are variants of A1. A, B, C, D are equivalent symmetry, e.g, {A1H1A, A1H1B, A1H1C, A1H1D; A1H2A, A1H2B, A1H2C, A1H2D; A2A, A2B, A2C, A2D}. Default = empty string, meaning simple random.")
     public String permuteAlgorithm = "";
 }

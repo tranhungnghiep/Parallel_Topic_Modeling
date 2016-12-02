@@ -172,21 +172,23 @@ public class PModel extends jgibblda.Model {
      * @throws Exception 
      */
     public void partitionData(int howToPartition) throws Exception {
-        // Get newly created list.
+        // Get newly created list. Only shuffle this id list, not touching the actual doc and word list.
         getDocIDList();
         getWordIDList();
         
-        // Permute dw matrix and get doc and word id list.
+        // Permute dw matrix and update doc and word id list.
+        // Algorithm A1H1 & A1H2 (1 & 2): the only time, because non-random. 
+        // Algorithm A2 (3): first time. 
         if (this.permuteAlgorithm.startsWith("A1") || this.permuteAlgorithm.startsWith("A2")) {
             dwPermuteParallel();
         }
         
         // New list contain same Integer object.
-        // However it could add/remove/change order independently, so shuffle is OK.
+        // However it could add/remove/change order independently, so shuffle is OK, not changing list best.
         List<Integer> docIDListBest = new ArrayList<>(docIDList);
         List<Integer> wordIDListBest = new ArrayList<>(wordIDList);
         
-        // Partition method will newly create a HashMap, so old content is reserved.
+        // Partition method will newly create a HashMap, so old content is reserved, not changing partition best.
         HashMap<Integer, Integer> docToPartitionBest = docToPartition;
         HashMap<Integer, Integer> wordToPartitionBest = wordToPartition;
         
@@ -214,9 +216,14 @@ public class PModel extends jgibblda.Model {
             }
 
             // Shuffle after partitioning, so the first partitioning is based on original order.
-            if (this.permuteAlgorithm.startsWith("A2")) {
+            if (this.permuteAlgorithm.startsWith("A2")) { 
+                // A2: Random with prior: continue shuffling.
                 dwPermuteParallel();
-            } else {
+            } else { 
+                // For experimental purpose, we only care about the value of A1H1 & A1H2 eta and average random eta, not using it.
+                // A1H1, A1H2: non-random: already shuffle 1 time: no more shuffling. -> print as First eta.
+                // Other value, empty string...: just simple random shuffle.
+                // All eta are averaged and printed as random eta.
                 Collections.shuffle(docIDList);
                 Collections.shuffle(wordIDList);
             }
@@ -1014,7 +1021,11 @@ public class PModel extends jgibblda.Model {
     }
 
     /**
-     * Algorithm 1 to permute DW matrix.
+     * Algorithm 1, 2, 3 to permute DW matrix.
+     * A1 is non-random (Algorithm 1 and 2 in the paper), A2 is random with prior (Algorithm 3 in the paper). 
+     * H1 and H2 are variants of A1. 
+     * A, B, C, D are equivalent symmetry. 
+     * Default = empty string, meaning simple random.
      * 
      * @throws Exception 
      */

@@ -82,6 +82,7 @@ public class PEstimator_BoT extends PEstimator {
 
     /**
      * Estimate in parallel.
+     * BoTA1 is the original paper's BoT model. There may be other variants/extensions.
      * 
      * @throws Exception 
      */
