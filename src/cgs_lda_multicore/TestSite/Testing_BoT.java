@@ -20,21 +20,21 @@ public class Testing_BoT {
             // Continue estimate: -estc -dir models/casestudy/ -model model-01000 -niters 800 -savestep 100 -twords 30
             // Inference: -inf -dir models/casestudy/ -model model-01800 -niters 30 -twords 20 -dfile newdocs.dat
             args = new String[]{"-est", 
-                "-dir", "D:\\ResD\\temp\\CGS_LDA_Multicore_Test\\LocalTestBoT", 
+                "-dir", "/Users/mac/NetBeansProjects/Parallel_Topic_Modeling/TestData", 
                 "-dfile", "doc.txt", "-tsfile", "ts.txt",
-                // "-isseptestset": absent means false.
-                "-testsetprop", "0.1",
-                "-datafileformat", "Private",
-                "-tsfileformat", "Single",
-                "-dfiletrain", "",
-                "-dfiletest", "",
+//                 "-isseptestset": absent means false.
+//                "-testsetprop", "0.1",
+//                "-datafileformat", "Private",
+//                "-tsfileformat", "Single",
+//                "-dfiletrain", "",
+//                "-dfiletest", "",
                 "-alpha", "0.5", "-beta", "0.1", "-gamma", "0.1",
-                "-ntopics", "150", "-L", "1",
-                "-niters", "2", "-burnin", "50", "-savestep", "0",
-                "-twords", "10", 
-                "-howtogetdist", "1",
-                "-threadpoolsize", "1",
-                "-P", "10", "-shuffle", "1000", "-howtopart", "2"
+//                "-ntopics", "150", "-L", "1",
+//                "-niters", "2", "-burnin", "50", "-savestep", "0",
+//                "-twords", "10", 
+//                "-howtogetdist", "1",
+                "-threadpoolsize", "0",
+//                "-P", "10", "-shuffle", "10", "-shufflets", "10", "-howtopart", "2"
             };
             
             PLDA_BoT.main(args);

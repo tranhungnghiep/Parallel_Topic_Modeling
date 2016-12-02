@@ -34,7 +34,10 @@ public class PLDACmdOption extends LDACmdOption {
     @Option(name = "-howtogetdist", usage = "How to get distribution of Theta and Phi: 1: using final sample, 2: average of theta and phi from many samples. Default = 1.")
     public int howToGetDistribution = 1;
     
-    @Option(name = "-testsetprop", usage = "Proportion of test set from dataset. Default = 0.1.")
+    @Option(name = "-isseptestset", usage = "Data preparation: Separate training set and test set or not. Default = false.")
+    public boolean isSepTestset = false;
+
+    @Option(name = "-testsetprop", usage = "Data preparation: Proportion of test set from dataset to separate. Default = 0.1.")
     public double testSetProportion = 0.1;
 
     @Option(name = "-dfiletrain", usage = "Specify training data file")
@@ -42,9 +45,6 @@ public class PLDACmdOption extends LDACmdOption {
 
     @Option(name = "-dfiletest", usage = "Specify test data file")
     public String dfiletest = "";
-
-    @Option(name = "-isseptestset", usage = "Separate training set and test set or not. Default = false.")
-    public boolean isSepTestset = false;
 
     @Option(name = "-datafileformat", usage = "Format of datafile input. Value = {Private, NYT, CORE, ...}. Default = private format.")
     public String datafileFormat = "Private";
