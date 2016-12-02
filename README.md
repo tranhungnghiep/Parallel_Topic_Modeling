@@ -31,17 +31,17 @@ Parallel_Topic_Modeling can either be used in command line or as a library in yo
 #### Sample:
 _LDA Model:_
 </br>The following command estimates the topic distribution of MAS corpus (the above dataset) using LDA model, parallelized in 10 threads, where MAS_doc_removedSW.txt is document file.
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -testsetprop 0.1 -datafileformat Private -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -ntopics 150 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -howtopart 2`
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -datafileformat Private -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -ntopics 150 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -howtopart 2`
 
 It can be shortened using default value as:
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -alpha 0.5 -beta 0.1 threadpoolsize 0 -P 10`
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -alpha 0.5 -beta 0.1 -threadpoolsize 0 -P 10`
 
 _BoT Model:_
 </br>The following command estimates the topic distribution of MAS corpus (the above dataset) using BoT model, parallelized in 10 threads, where MAS_doc_removedSW.txt is document file and MAS_ts.txt is timestamp file. Note that for BoT model, we change the class to cgs_lda_multicore.UI.PLDA_BoT. We also specify some new options such as timestamp file, timestamp file format, time prior gamma, time array length L, how to shuffle timestamps.
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -testsetprop 0.1 -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 8 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 100 -howtopart 2`
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -datafileformat Private -tsfileformat Single -dfiletrain -dfiletest -alpha 0.5 -beta 0.1 -gamma 0.1 -ntopics 150 -L 8 -niters 200 -burnin 100 -savestep 10 -twords 100 -howtogetdist 1 -threadpoolsize 0 -P 10 -shuffle 10 -shufflets 100 -howtopart 2`
 
 It can be shortened using default value as:
-</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1 threadpoolsize 0 -P 10`
+</br>`java -Xmx64g -cp ./Code/Parallel_Topic_Modeling.jar cgs_lda_multicore.UI.PLDA_BoT -est -dir ./Data/MAS -dfile MAS_doc_removedSW.txt -tsfile MAS_ts.txt -alpha 0.5 -beta 0.1 -gamma 0.1 -threadpoolsize 0 -P 10`
 
 Please see files `/src/jgibblda/LDACmdOption.java` and `/src/cgs_lda_multicore/Utility/PLDACmdOption.java` for explanation of commandline options.
 
