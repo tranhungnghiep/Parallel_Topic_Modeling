@@ -31,7 +31,7 @@ public class PLDACmdOption extends LDACmdOption {
     @Option(name = "-howtopart", usage = "How to partition: 1: even, 2: gpu. Default = 2.")
     public int howToPartition = 2;
     
-    @Option(name = "-howtogetdist", usage = "How to get distribution of Theta and Phi: 1: using final sample, 2: average of theta and phi from many samples. Default = 1.")
+    @Option(name = "-howtogetdist", usage = "How to get distribution of Theta and Phi: 1: using final sample, 2: average of theta and phi from many samples, require savestep > 0. Default = 1.")
     public int howToGetDistribution = 1;
     
     @Option(name = "-isseptestset", usage = "Data preparation: Separate training set and test set or not. Default = false.")

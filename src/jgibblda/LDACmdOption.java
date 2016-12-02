@@ -34,8 +34,8 @@ public class LDACmdOption {
     @Option(name = "-niters", usage = "Specify the number of iterations. Default = 200.")
     public int niters = 200;
 
-    @Option(name = "-savestep", usage = "Thinning interval: Specify the number of steps to save the model since the last save. Save step = 0 means not save. Default = 10.")
-    public int savestep = 10;
+    @Option(name = "-savestep", usage = "Thinning interval: Specify the number of steps to save the model since the last save. Save step = 0 means not save. Default = 0.")
+    public int savestep = 0;
 
     @Option(name = "-twords", usage = "Specify the number of most likely words to be printed for each topic")
     public int twords = 100;
