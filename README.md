@@ -23,7 +23,7 @@ Line 5: timestamp of document 2
 ...
 ```
 
-The source code also supports NIPS and NYTimes dataset format.
+The source code also supports other popular dataset formats, such as <a href="http://archive.ics.uci.edu/ml/datasets/Bag+of+Words">NIPS and NYTimes</a>.
 
 ### How to use
 Parallel_Topic_Modeling can either be used in command line or as a library in you code. You can specify the model (LDA or BoT), the number of parallel threads, how to partition data, etc. You can use the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/releases">pre-built jar file</a> directly.
