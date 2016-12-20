@@ -210,14 +210,14 @@ public class LDADataset_BoT extends LDADataset {
      */
     public void printDatasetUnitTestInfo(int stepSize) throws Exception {
         for (int i = 0; i < docs.length/stepSize; i++) {
-            System.out.println(String.valueOf(i * stepSize) + ".");
-            System.out.println("\nContent: ");
+            System.out.print(String.valueOf(i * stepSize) + ".");
+            System.out.print("\nContent: ");
             for (int w : docs[i * stepSize].words) {
-                System.out.println(localDict.getWord(w) + " ");
+                System.out.print(localDict.getWord(w) + " ");
             }
-            System.out.println("\nTimestamp: ");
+            System.out.print("\nTimestamp: ");
             for (int t : docs[i * stepSize].tss) {
-                System.out.println(localDictBoT.getWord(t) + " ");
+                System.out.print(localDictBoT.getWord(t) + " ");
             }
             System.out.println("\n");
         }
