@@ -36,6 +36,7 @@ import java.util.Vector;
 
 /**
  * Compute new Phi seem to have error: repeated term in denominator.
+ * => Corrected by removing repeated term.
  * 
  * @modify THNghiep
  */
