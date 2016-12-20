@@ -197,4 +197,29 @@ public class LDADataset_BoT extends LDADataset {
         System.out.println("Number of word instances: " + wordInstance);
         System.out.println("Number of timestamp instances: " + tsInstance);
     }
+
+    /**
+     * Print information for unit test.
+     * Output:
+     * - Paper after every stepSize: 
+     * -> title, abstract.
+     * -> timestamp array.
+     * 
+     * @param stepSize
+     * @throws Exception 
+     */
+    public void printDatasetUnitTestInfo(int stepSize) throws Exception {
+        for (int i = 0; i < docs.length/stepSize; i++) {
+            System.out.println(String.valueOf(i * stepSize) + ".");
+            System.out.println("\nContent: ");
+            for (int w : docs[i * stepSize].words) {
+                System.out.println(localDict.getWord(w) + " ");
+            }
+            System.out.println("\nTimestamp: ");
+            for (int t : docs[i * stepSize].tss) {
+                System.out.println(localDictBoT.getWord(t) + " ");
+            }
+            System.out.println("\n");
+        }
+    }
 }
