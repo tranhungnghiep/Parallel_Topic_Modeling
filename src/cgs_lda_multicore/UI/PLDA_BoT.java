@@ -40,7 +40,7 @@ public class PLDA_BoT {
                 long elapse = System.currentTimeMillis() - start;
                 System.out.println("Model init time: " + (double) elapse / 1000 + " second.");
                 pEstimator.trnModel.data.printDatasetStatistics();
-                pEstimator.trnModel.data.printDatasetUnitTestInfo(100000); // For testing purpose: check if paper and timestamp synced.
+//                pEstimator.trnModel.data.printDatasetUnitTestInfo(100000); // For testing purpose: check if paper and timestamp synced.
                 
                 // Print eta.
                 System.out.println("Best eta: " + pEstimator.trnModel.etaBest);

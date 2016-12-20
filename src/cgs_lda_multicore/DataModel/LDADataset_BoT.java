@@ -219,7 +219,7 @@ public class LDADataset_BoT extends LDADataset {
             for (int t : docs[i * stepSize].tss) {
                 System.out.print(localDictBoT.getWord(t) + " ");
             }
-            System.out.println("\n");
+            System.out.print("\n");
         }
     }
 }
