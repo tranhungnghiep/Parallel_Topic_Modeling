@@ -80,7 +80,7 @@ public class PLDA_BoT {
     }
 
     public static void showHelp(CmdLineParser parser) {
-        System.out.println("CGS LDA Multicore [options...] [arguments...]");
+        System.out.println("Parallel Topic Modeling [options...] [arguments...]");
         parser.printUsage(System.out);
     }
 
