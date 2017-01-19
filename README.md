@@ -2,7 +2,7 @@
 ### Introduction
 Parallel_Topic_Modeling is a Java implementation of parallel Gibbs sampling for topic modeling based on a novel <a href="https://arxiv.org/pdf/1510.04317.pdf">data partitioning algorithm</a>. The source code supports learning topic distributions of large corpus using <a href="http://www.jmlr.org/papers/v3/blei03a.html">LDA</a> and <a href="http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51">BoT</a> (a simple and effective time-aware topic model), with efficient parallelization speedup on multi-core CPU. Our code is based on <a href="http://jgibblda.sourceforge.net/">JGibbLDA</a>, a non-parallel LDA implementation.
 
-We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains over 1 million scientific papers in the computer science domain from 1951 to 2010, crawled from <a href="http://academic.research.microsoft.com">Microsoft Academic Research</a> (MAS), finished in November 2012. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5ZjQzTVloZlVPZU0 (.zip, 395 MB).
+We also built a dataset that contains timestamped documents for time-aware topic modeling experiments. The dataset contains over 1 million scientific papers in the computer science domain from 1951 to 2010, crawled from <a href="http://academic.research.microsoft.com">Microsoft Academic Research</a> (MAS), finished in November 2012. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5OEVfaVl6VTlsb2c (.zip, 595 MB).
 
 #### Data format:
 _Document file:_
