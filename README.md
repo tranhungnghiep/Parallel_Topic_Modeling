@@ -54,7 +54,7 @@ Parallel_Topic_Modeling is a free software under the terms of <a href="http://ww
 
 The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">Open Data Commons Attribution License</a> 1.0. You can freely use, redistribute, and modify it as long as you acknowledge us.
 
-If you find the source code or the dataset useful, please acknowledge us by citing the following paper: 
+Corresponding paper:
 _<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015._
 
 For more information, please visit the website: https://sites.google.com/site/tranhungnghiep
