@@ -2,7 +2,7 @@
 ### Introduction
 Parallel_Topic_Modeling is a Java implementation of parallel Gibbs sampling for topic modeling based on a novel <a href="https://arxiv.org/pdf/1510.04317.pdf">data partitioning algorithm</a>. The source code supports learning topic distributions of large corpus using <a href="http://www.jmlr.org/papers/v3/blei03a.html">LDA</a> and <a href="http://link.springer.com/chapter/10.1007/978-3-642-00672-2_51">BoT</a> (a simple and effective time-aware topic model), with efficient parallelization speedup on multi-core CPU. Our code is based on <a href="http://jgibblda.sourceforge.net/">JGibbLDA</a>, a non-parallel LDA implementation.
 
-We also built a dataset that contains time-stamped documents for time-aware topic modeling experiments. The dataset contains over 1 million scientific papers in the computer science domain from 1951 to 2010, crawled from <a href="http://academic.research.microsoft.com">Microsoft Academic Research</a> (MAS), finished in November 2012. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5OEVfaVl6VTlsb2c (.zip, 595 MB).
+We also built a dataset that contains time-stamped documents for time-aware topic modeling experiments. The dataset contains over 1 million scientific papers in the computer science domain from 1951 to 2010, crawled from <a href="http://academic.research.microsoft.com">Microsoft Academic Search</a> (MAS), finished in November 2012. The dataset can be downloaded at: https://drive.google.com/file/d/0B8gXe63FdGk5OEVfaVl6VTlsb2c (.zip, 595 MB).
 
 #### Data format:
 _Document file:_
@@ -50,11 +50,11 @@ For using in your code as a library, please see sample files `/src/cgs_lda_multi
 The source code was written in Java using Ant-based NetBeans project format, which can be opened in <a href="https://netbeans.org/">NetBeans IDE</a>. For other IDEs, please see the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/tree/Parallel_Topic_Modeling_Maven">Maven port</a>. 
 
 ### License
-Parallel_Topic_Modeling is a free software under the terms of <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 and any later version. You can freely use, redistribute, and modify it as long as you acknowledge us and adopt the same license for derivative works.
+Parallel_Topic_Modeling is a free software under the terms of <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 (you are free to use, redistribute, and modify as long as you acknowledge us and adopt the same license for derivative works).
 
-The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">Open Data Commons Attribution License</a> 1.0. You can freely use, redistribute, and modify it as long as you acknowledge us.
+The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">Open Data Commons Attribution License</a> 1.0 (you are free to use, redistribute, and modify as long as you acknowledge us).
 
-Corresponding paper:
-_<br/>Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015._
+**Corresponding paper:**  
+*Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.*
 
 For more information, please visit the website: https://sites.google.com/site/tranhungnghiep
