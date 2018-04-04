@@ -50,9 +50,9 @@ For using in your code as a library, please see sample files `/src/cgs_lda_multi
 The source code was written in Java using Ant-based NetBeans project format, which can be opened in <a href="https://netbeans.org/">NetBeans IDE</a>. For other IDEs, please see the <a href="https://github.com/tranhungnghiep/Parallel_Topic_Modeling/tree/Parallel_Topic_Modeling_Maven">Maven port</a>. 
 
 ### License
-Parallel_Topic_Modeling is a free software under the terms of <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 (you are free to use, redistribute, and modify as long as you acknowledge us and adopt the same license for derivative works).
+Parallel_Topic_Modeling is a free software under <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 (you are free to use, redistribute, and modify as long as you acknowledge us and adopt the same license for derivative works).
 
-The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">Open Data Commons Attribution License</a> 1.0 (you are free to use, redistribute, and modify as long as you acknowledge us).
+The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">ODC-BY License</a> 1.0 (you are free to use, redistribute, and modify as long as you acknowledge us).
 
 **Corresponding paper:**  
 *Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.*
