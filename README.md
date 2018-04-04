@@ -52,7 +52,7 @@ The source code was written in Java using Ant-based NetBeans project format, whi
 ### License
 Parallel_Topic_Modeling is a free software under <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL</a> 3.0 (you are free to use, redistribute, and modify as long as you acknowledge us and adopt the same license for derivative works).
 
-The dataset is provided under the <a href="http://opendatacommons.org/licenses/by/summary/">ODC-BY License</a> 1.0 (you are free to use, redistribute, and modify as long as you acknowledge us).
+The dataset is provided under <a href="http://opendatacommons.org/licenses/by/summary/">ODC-BY License</a> 1.0 (you are free to use, redistribute, and modify as long as you acknowledge us).
 
 **Corresponding paper:**  
 *Hung Nghiep Tran, Atsuhiro Takasu. <a href="http://ieeexplore.ieee.org/document/7334854/" target="_blank">Partitioning Algorithms for Improving Efficiency of Topic Modeling Parallelization</a>. PacRim 2015.*
